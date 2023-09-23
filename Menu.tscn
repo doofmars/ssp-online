@@ -1,0 +1,51 @@
+[gd_scene load_steps=2 format=3 uid="uid://bv5pyxjxyicbl"]
+
+[ext_resource type="Script" path="res://Menu.gd" id="1_xbbk1"]
+
+[node name="Menu" type="CanvasLayer"]
+script = ExtResource("1_xbbk1")
+
+[node name="Message" type="Label" parent="."]
+anchors_preset = -1
+anchor_left = 0.517
+anchor_top = 0.162
+anchor_right = 0.517
+anchor_bottom = 0.162
+offset_left = -158.584
+offset_top = -0.975998
+offset_right = 165.416
+offset_bottom = 25.024
+text = " SSP-Online"
+horizontal_alignment = 1
+
+[node name="GridContainer" type="GridContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+
+[node name="SinglePlayer" type="Button" parent="GridContainer"]
+layout_mode = 2
+text = "Start"
+
+[node name="JoinGame" type="Button" parent="GridContainer"]
+visible = false
+layout_mode = 2
+text = "Join Game
+"
+
+[node name="CreateGame" type="Button" parent="GridContainer"]
+visible = false
+layout_mode = 2
+text = "Create Game
+"
+
+[node name="Quit" type="Button" parent="GridContainer"]
+layout_mode = 2
+text = "Quit
+"
+
+[connection signal="pressed" from="GridContainer/SinglePlayer" to="." method="_on_single_player_pressed"]
+[connection signal="pressed" from="GridContainer/Quit" to="." method="_on_quit_pressed"]

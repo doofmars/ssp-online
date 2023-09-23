@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://b4ky03b0l01i6"]
+[gd_scene load_steps=3 format=3 uid="uid://dugs7dl2hfge2"]
 
 [ext_resource type="Script" path="res://Level.gd" id="1_s5gc4"]
+[ext_resource type="PackedScene" uid="uid://bv5pyxjxyicbl" path="res://Menu.tscn" id="2_df0ea"]
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_s5gc4")
@@ -11,3 +12,7 @@ offset_bottom = 648.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 color = Color(0.623529, 0.733333, 0.137255, 1)
+
+[node name="Menu" parent="." instance=ExtResource("2_df0ea")]
+
+[connection signal="start_singleplayer" from="Menu" to="." method="_on_menu_start_singleplayer"]
