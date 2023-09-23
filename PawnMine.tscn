@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://cjw5tga1tmsnl"]
+
+[ext_resource type="Texture2D" uid="uid://comnfn7nr4nky" path="res://assets/kadse.png" id="1_n8t56"]
+
+[node name="Pawn" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(45, 22)
+texture = ExtResource("1_n8t56")

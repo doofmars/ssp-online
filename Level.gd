@@ -24,6 +24,7 @@ func _ready():
 			var square = ColorRect.new()
 			square.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + y * SQUARE_SIZE)
 			square.size = Vector2(SQUARE_SIZE, SQUARE_SIZE)
+			square.name = str("square", x, "-", y)
 			#print(str("(", BOARD_POS_X + x * SQUARE_SIZE, ", ", BOARD_POS_Y + y * SQUARE_SIZE, " -> ", (x % 2 + y % 2) % 2 == 0, ")"))
 			if (x % 2 + y % 2) % 2 == 0:
 				square.color = SQUARE_COLOR_1
@@ -49,6 +50,14 @@ func _on_menu_start_singleplayer():
 		for y in PAWN_ROWS:
 			var PawnEnemy = load("res://PawnEnemy.tscn")
 			var pawn_enemy_node = PawnEnemy.instantiate()
-			pawn_enemy_node.set_name(str("enemy", x+y))
+			pawn_enemy_node.set_name(str("enemy", x, "-", y))
 			pawn_enemy_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + y * SQUARE_SIZE)
 			add_child(pawn_enemy_node)
+	# Place my pawns
+	for x in SQUARE_COUNT_X:
+		for y in PAWN_ROWS:
+			var PawnMine = load("res://PawnMine.tscn")
+			var pawn_mine_node = PawnMine.instantiate()
+			pawn_mine_node.set_name(str("mine", x, "-", y))
+			pawn_mine_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + SQUARE_SIZE * SQUARE_COUNT_Y - (y + 1) * SQUARE_SIZE)
+			add_child(pawn_mine_node)
