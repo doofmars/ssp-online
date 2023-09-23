@@ -1,7 +1,7 @@
 extends Node
 
 var BOARD_POS_X = 100
-var BOARD_POS_Y = 144
+var BOARD_POS_Y = 114
 var SQUARE_SIZE = 60
 var SQUARE_COUNT_X = 7
 var SQUARE_COUNT_Y = 6
@@ -13,14 +13,14 @@ func _ready():
 
 	for x in SQUARE_COUNT_X:
 		for y in SQUARE_COUNT_Y:
-			var square = Sprite2D.new()
-			square.texture = load("res://assets/white.png")
-			square.transform = Transform2D(0.0, Vector2(SQUARE_SIZE, SQUARE_SIZE), 0, Vector2(BOARD_POS_X + x * SQUARE_SIZE + SQUARE_SIZE/2, BOARD_POS_Y + y * SQUARE_SIZE + SQUARE_SIZE/2))
+			var square = ColorRect.new()
+			square.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE + SQUARE_SIZE/2, BOARD_POS_Y + y * SQUARE_SIZE + SQUARE_SIZE/2)
+			square.size = Vector2(SQUARE_SIZE, SQUARE_SIZE)
 			print(str("(", BOARD_POS_X + x * SQUARE_SIZE, ", ", BOARD_POS_Y + y * SQUARE_SIZE, " -> ", (x % 2 + y % 2) % 2 == 0, ")"))
 			if (x % 2 + y % 2) % 2 == 0:
-				square.set_modulate(SQUARE_COLOR_1)
+				square.color = SQUARE_COLOR_1
 			else:
-				square.set_modulate(SQUARE_COLOR_2)
+				square.color = SQUARE_COLOR_2
 			
 			add_child(square)
 	pass # Replace with function body.
