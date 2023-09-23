@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bv5pyxjxyicbl"]
+[gd_scene load_steps=3 format=3 uid="uid://bv5pyxjxyicbl"]
 
 [ext_resource type="Script" path="res://Menu.gd" id="1_xbbk1"]
+
+[sub_resource type="Theme" id="Theme_ffg0r"]
 
 [node name="Menu" type="CanvasLayer"]
 script = ExtResource("1_xbbk1")
@@ -15,6 +17,7 @@ offset_left = -158.584
 offset_top = -0.975998
 offset_right = 165.416
 offset_bottom = 25.024
+theme = SubResource("Theme_ffg0r")
 text = " SSP-Online"
 horizontal_alignment = 1
 

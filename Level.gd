@@ -9,6 +9,7 @@ var BORDER_COLOR = "c6d878"
 var BORDER_WIDTH = 2
 var SQUARE_COLOR_1 = "c6d878"
 var SQUARE_COLOR_2 = "9fbb23"
+var PAWN_ROWS = 2
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -43,4 +44,11 @@ func _on_run_game():
 
 
 func _on_menu_start_singleplayer():
-	pass # Replace with function body.
+	# Place enemy pawns
+	for x in SQUARE_COUNT_X:
+		for y in PAWN_ROWS:
+			var PawnEnemy = load("res://PawnEnemy.tscn")
+			var pawn_enemy_node = PawnEnemy.instantiate()
+			pawn_enemy_node.set_name(str("enemy", x+y))
+			pawn_enemy_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + y * SQUARE_SIZE)
+			add_child(pawn_enemy_node)
