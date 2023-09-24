@@ -1,9 +1,60 @@
-[gd_scene load_steps=2 format=3 uid="uid://cjw5tga1tmsnl"]
+[gd_scene load_steps=8 format=3 uid="uid://cjw5tga1tmsnl"]
 
+[ext_resource type="Script" path="res://Pawn.gd" id="1_0y0ds"]
 [ext_resource type="Texture2D" uid="uid://comnfn7nr4nky" path="res://assets/kadse.png" id="1_n8t56"]
+[ext_resource type="Texture2D" uid="uid://b8iqpcphcyasb" path="res://assets/scissor.png" id="2_mmyea"]
+[ext_resource type="Texture2D" uid="uid://cc0wri7jrj7pw" path="res://assets/rock.png" id="2_xjj4l"]
+[ext_resource type="Texture2D" uid="uid://dv7lxsimuwmkb" path="res://assets/paper.png" id="3_754ft"]
+[ext_resource type="Texture2D" uid="uid://4awn3tsl0ula" path="res://assets/flag.png" id="5_v7h1y"]
+[ext_resource type="Texture2D" uid="uid://bgxln7pul10op" path="res://assets/trap.png" id="6_p6dm4"]
 
-[node name="Pawn" type="Node2D"]
+[node name="PawnMine" type="Node2D"]
+script = ExtResource("1_0y0ds")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Body" type="Sprite2D" parent="."]
 position = Vector2(45, 22)
 texture = ExtResource("1_n8t56")
+
+[node name="ActiveRock" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(-49, 10)
+texture = ExtResource("2_xjj4l")
+
+[node name="ActivePaper" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(-30, 24)
+rotation = -1.5708
+texture = ExtResource("3_754ft")
+
+[node name="ActiveScissor" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(-25, 3)
+rotation = 1.91986
+scale = Vector2(1, 1)
+texture = ExtResource("2_mmyea")
+
+[node name="HiddenRock" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(7, 24)
+texture = ExtResource("2_xjj4l")
+
+[node name="HiddenPaper" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(15, 15)
+texture = ExtResource("3_754ft")
+
+[node name="HiddenScissor" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(12, 17)
+texture = ExtResource("2_mmyea")
+
+[node name="Flag" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(28, 14)
+rotation = 0.666716
+texture = ExtResource("5_v7h1y")
+
+[node name="Trap" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(-8, 0)
+texture = ExtResource("6_p6dm4")

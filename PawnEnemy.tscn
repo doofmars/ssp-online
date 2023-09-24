@@ -1,9 +1,32 @@
-[gd_scene load_steps=2 format=3 uid="uid://clq8gebtfgqs4"]
+[gd_scene load_steps=6 format=3 uid="uid://clq8gebtfgqs4"]
 
 [ext_resource type="Texture2D" uid="uid://vlsumkh075t6" path="res://assets/blueguy.png" id="1_cln2y"]
+[ext_resource type="Script" path="res://Pawn.gd" id="1_sqt6e"]
+[ext_resource type="Texture2D" uid="uid://cc0wri7jrj7pw" path="res://assets/rock.png" id="2_owc51"]
+[ext_resource type="Texture2D" uid="uid://dv7lxsimuwmkb" path="res://assets/paper.png" id="3_qqai1"]
+[ext_resource type="Texture2D" uid="uid://b8iqpcphcyasb" path="res://assets/scissor.png" id="4_5srcr"]
 
-[node name="Pawn" type="Node2D"]
+[node name="PawnEnemy" type="Node2D"]
+script = ExtResource("1_sqt6e")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Body" type="Sprite2D" parent="."]
 position = Vector2(45, 22)
 texture = ExtResource("1_cln2y")
+
+[node name="ActiveRock" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(-43, 19)
+texture = ExtResource("2_owc51")
+
+[node name="ActivePaper" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(-30, 24)
+rotation = -1.5708
+texture = ExtResource("3_qqai1")
+
+[node name="ActiveScissor" type="Sprite2D" parent="Body"]
+visible = false
+position = Vector2(-25, 3)
+rotation = 1.91986
+scale = Vector2(1, 1)
+texture = ExtResource("4_5srcr")

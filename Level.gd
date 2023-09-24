@@ -60,4 +60,5 @@ func _on_menu_start_singleplayer():
 			var pawn_mine_node = PawnMine.instantiate()
 			pawn_mine_node.set_name(str("mine", x, "-", y))
 			pawn_mine_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + SQUARE_SIZE * SQUARE_COUNT_Y - (y + 1) * SQUARE_SIZE)
+			pawn_mine_node.hide_all()
 			add_child(pawn_mine_node)
