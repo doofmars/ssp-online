@@ -11,6 +11,14 @@
 [node name="PawnMine" type="Node2D"]
 script = ExtResource("1_0y0ds")
 
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 8.0
+offset_top = -8.0
+offset_right = 69.0
+offset_bottom = 52.0
+
 [node name="Body" type="Sprite2D" parent="."]
 position = Vector2(45, 22)
 texture = ExtResource("1_n8t56")
@@ -30,7 +38,6 @@ texture = ExtResource("3_754ft")
 visible = false
 position = Vector2(-25, 3)
 rotation = 1.91986
-scale = Vector2(1, 1)
 texture = ExtResource("2_mmyea")
 
 [node name="HiddenRock" type="Sprite2D" parent="Body"]
@@ -58,3 +65,7 @@ texture = ExtResource("5_v7h1y")
 visible = false
 position = Vector2(-8, 0)
 texture = ExtResource("6_p6dm4")
+
+[connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
+[connection signal="mouse_entered" from="Control" to="." method="_on_control_mouse_entered"]
+[connection signal="mouse_exited" from="Control" to="." method="_on_control_mouse_exited"]
