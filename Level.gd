@@ -11,6 +11,11 @@ var SQUARE_COLOR_1 = "c6d878"
 var SQUARE_COLOR_2 = "9fbb23"
 var PAWN_ROWS = 2
 
+var states = ["HiddenRock", "HiddenPaper", "HiddenScissor"]
+var boardState = []
+var gameStates = ["PlaceFlag", "PlaceTrap", "PlayerTurn", "EnemyTurn", "PlayerWin", "EnemyWin", "Draw"]
+var gameState = "PlaceFlag"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var border = ColorRect.new()
@@ -32,7 +37,6 @@ func _ready():
 				square.color = SQUARE_COLOR_2
 			
 			add_child(square)
-	pass # Replace with function body.
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -43,12 +47,17 @@ func _process(delta):
 func _on_run_game():
 	pass
 
+func set_random_item(pawn):
+	var state = states[randi() % states.size()]
+	pawn.show_item(state)
+
 
 func _on_menu_start_singleplayer():
+	var PawnEnemy = load("res://PawnEnemy.tscn")
+	var PawnMine = load("res://PawnMine.tscn")
 	# Place enemy pawns
 	for x in SQUARE_COUNT_X:
 		for y in PAWN_ROWS:
-			var PawnEnemy = load("res://PawnEnemy.tscn")
 			var pawn_enemy_node = PawnEnemy.instantiate()
 			pawn_enemy_node.set_name(str("enemy", x, "-", y))
 			pawn_enemy_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + y * SQUARE_SIZE)
@@ -56,9 +65,29 @@ func _on_menu_start_singleplayer():
 	# Place my pawns
 	for x in SQUARE_COUNT_X:
 		for y in PAWN_ROWS:
-			var PawnMine = load("res://PawnMine.tscn")
 			var pawn_mine_node = PawnMine.instantiate()
 			pawn_mine_node.set_name(str("mine", x, "-", y))
 			pawn_mine_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + SQUARE_SIZE * SQUARE_COUNT_Y - (y + 1) * SQUARE_SIZE)
 			pawn_mine_node.hide_all()
+			pawn_mine_node.connect("pawn_clicked", _on_pawn_clicked, 0)
 			add_child(pawn_mine_node)
+
+func _on_pawn_clicked(pawn):
+	if gameState == "PlaceFlag":
+		pawn.show_item("Flag")
+		gameState = "PlaceTrap"
+	elif gameState == "PlaceTrap":
+		pawn.show_item("Trap")
+		gameState = "PlayerTurn"
+	elif gameState == "PlayerTurn":
+		pass
+	elif gameState == "EnemyTurn":
+		pass
+	elif gameState == "PlayerWin":
+		pass
+	elif gameState == "EnemyWin":
+		pass
+	elif gameState == "Draw":
+		pass
+	else:
+		pass

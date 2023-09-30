@@ -1,6 +1,8 @@
 extends Node2D
+signal pawn_clicked
 
 var MouseOver = false
+var Item = ""
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -20,12 +22,14 @@ func hide_all():
 
 func show_item(state):
 	get_node("Body").get_node(state).show()
+	Item = state
 
 
 func _on_control_gui_input(event):
 	if event is InputEventMouseButton:
 		if MouseOver and event.pressed:
 			print(str("Clicked On Object ", name))
+			emit_signal("pawn_clicked", self)
 
 
 func _on_control_mouse_exited():
