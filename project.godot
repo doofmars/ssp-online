@@ -19,6 +19,11 @@ config/icon="res://icon.svg"
 
 window/stretch/mode="canvas_items"
 
+[filesystem]
+
+import/blender/enabled=false
+import/fbx/enabled=false
+
 [input]
 
 action_quit={
