@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://jtanimgsf344"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8tqd8"]
+font_size = 60
+
+[node name="GameUI" type="CanvasLayer"]
+
+[node name="Intro" type="Label" parent="."]
+offset_left = 83.0
+offset_top = 278.0
+offset_right = 697.0
+offset_bottom = 395.0
+text = "Place Your Flag"
+label_settings = SubResource("LabelSettings_8tqd8")
+horizontal_alignment = 1
