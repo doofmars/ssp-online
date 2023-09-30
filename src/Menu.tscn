@@ -1,11 +1,11 @@
 [gd_scene load_steps=3 format=3 uid="uid://bv5pyxjxyicbl"]
 
-[ext_resource type="Script" path="res://Menu.gd" id="1_xbbk1"]
+[ext_resource type="Script" path="res://src/Menu.gd" id="1_rsu7q"]
 
 [sub_resource type="Theme" id="Theme_ffg0r"]
 
 [node name="Menu" type="CanvasLayer"]
-script = ExtResource("1_xbbk1")
+script = ExtResource("1_rsu7q")
 
 [node name="Message" type="Label" parent="."]
 anchors_preset = -1

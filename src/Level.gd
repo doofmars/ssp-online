@@ -53,8 +53,8 @@ func set_random_item(pawn):
 
 
 func _on_menu_start_singleplayer():
-	var PawnEnemy = load("res://PawnEnemy.tscn")
-	var PawnMine = load("res://PawnMine.tscn")
+	var PawnEnemy = load("res://src/PawnEnemy.tscn")
+	var PawnMine = load("res://src/PawnMine.tscn")
 	# Place enemy pawns
 	for x in SQUARE_COUNT_X:
 		for y in PAWN_ROWS:
