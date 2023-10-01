@@ -53,6 +53,8 @@ func set_random_item(pawn):
 
 
 func _on_menu_start_singleplayer():
+	var GameUI = get_node("GameUI")
+	GameUI.show()
 	var PawnEnemy = load("res://src/PawnEnemy.tscn")
 	var PawnMine = load("res://src/PawnMine.tscn")
 	# Place enemy pawns
