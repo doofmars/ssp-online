@@ -13,7 +13,7 @@ var PAWN_ROWS = 2
 
 var states = ["HiddenRock", "HiddenPaper", "HiddenScissor"]
 var boardState = []
-var gameStates = ["PlaceFlag", "PlaceTrap", "PlayerTurn", "EnemyTurn", "PlayerWin", "EnemyWin", "Draw"]
+var gameStates = ["PlaceFlag", "PlaceTrap", "ShufflePawns", "PlayerTurn", "EnemyTurn", "PlayerWin", "EnemyWin", "Draw"]
 var gameState = "PlaceFlag"
 
 # Called when the node enters the scene tree for the first time.
@@ -55,6 +55,7 @@ func set_random_item(pawn):
 func _on_menu_start_singleplayer():
 	var GameUI = get_node("GameUI")
 	GameUI.show()
+	GameUI.get_node("PlaceFlag").show()
 	var PawnEnemy = load("res://src/PawnEnemy.tscn")
 	var PawnMine = load("res://src/PawnMine.tscn")
 	# Place enemy pawns
@@ -77,10 +78,15 @@ func _on_menu_start_singleplayer():
 func _on_pawn_clicked(pawn):
 	if gameState == "PlaceFlag":
 		pawn.show_item("Flag")
+		get_node("GameUI").get_node("PlaceFlag").hide()
+		get_node("GameUI").get_node("PlaceTrap").show()
 		gameState = "PlaceTrap"
 	elif gameState == "PlaceTrap":
 		pawn.show_item("Trap")
+		get_node("GameUI").get_node("PlaceTrap").hide()
 		gameState = "PlayerTurn"
+	elif gameState == "ShufflePawns":
+		pass
 	elif gameState == "PlayerTurn":
 		pass
 	elif gameState == "EnemyTurn":
