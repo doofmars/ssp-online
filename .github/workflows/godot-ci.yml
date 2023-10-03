@@ -29,9 +29,8 @@ jobs:
 
       - name: Move HTML5 templates into position
         run: |
-          mkdir -v -p /github/home/.local/share/godot/export_templates
-          mv /root/.local/share/godot/export_templates/${GODOT_VERSION}.stable /github/home/.local/share/godot/export_templates
-          ls -la /github/home/.local/share/godot/export_templates/${GODOT_VERSION}.stable
+          mkdir -v -p /github/home/.local/share/godot/templates
+          mv /root/.local/share/godot/templates/${GODOT_VERSION}.stable /github/home/.local/share/godot/templates/${GODOT_VERSION}.stable
 
       - name: Create staging directory
         run: mkdir -v -p build/web
