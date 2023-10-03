@@ -6,7 +6,7 @@
 name: 'Publish to GitHub Pages'
 
 env:
-  GODOT_VERSION: 4.1.1 # Remember to manually set image to this version below.
+  GODOT_VERSION: 3.5.2 # Remember to manually set image to this version below.
 
 on:
   workflow_dispatch:
@@ -21,7 +21,7 @@ jobs:
       contents: write
 
     container:
-      image: barichello/godot-ci:4.1.1
+      image: barichello/godot-ci:3.5.2
 
     steps:
       - name: Checkout
@@ -38,14 +38,6 @@ jobs:
         
       - name: Build
         run: godot --headless --export-release "Web" ./build/web/index.html
-
-      - name: SetHtacess
-        run: |
-          cat <<EOF > ./build/web/.htaccess
-          Header set Cross-Origin-Embedder-Policy "require-corp"
-          Header set Cross-Origin-Opener-Policy "same-origin"
-          Header set Cross-Origin-Resource-Policy "same-site"
-          EOF
 
       - name: Verify
         run: ls -la ./build/web
