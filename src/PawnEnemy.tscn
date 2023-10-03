@@ -1,42 +1,40 @@
-[gd_scene load_steps=6 format=3 uid="uid://clq8gebtfgqs4"]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource type="Script" path="res://src/Pawn.gd" id="1_sxyys"]
-[ext_resource type="Texture2D" uid="uid://vlsumkh075t6" path="res://assets/blueguy.png" id="2_kqqrq"]
-[ext_resource type="Texture2D" uid="uid://cc0wri7jrj7pw" path="res://assets/rock.png" id="3_igd8g"]
-[ext_resource type="Texture2D" uid="uid://dv7lxsimuwmkb" path="res://assets/paper.png" id="4_877jw"]
-[ext_resource type="Texture2D" uid="uid://b8iqpcphcyasb" path="res://assets/scissor.png" id="5_hqp0f"]
+[ext_resource path="res://src/Pawn.gd" type="Script" id=1]
+[ext_resource path="res://assets/blueguy.png" type="Texture" id=2]
+[ext_resource path="res://assets/rock.png" type="Texture" id=3]
+[ext_resource path="res://assets/paper.png" type="Texture" id=4]
+[ext_resource path="res://assets/scissor.png" type="Texture" id=5]
 
 [node name="PawnEnemy" type="Node2D"]
-script = ExtResource("1_sxyys")
+script = ExtResource( 1 )
 
 [node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 15.0
-offset_top = -21.0
-offset_right = 77.0
-offset_bottom = 66.0
+margin_left = 15.0
+margin_top = -21.0
+margin_right = 77.0
+margin_bottom = 66.0
 
-[node name="Body" type="Sprite2D" parent="."]
-position = Vector2(45, 22)
-texture = ExtResource("2_kqqrq")
+[node name="Body" type="Sprite" parent="."]
+position = Vector2( 45, 22 )
+texture = ExtResource( 2 )
 
-[node name="ActiveRock" type="Sprite2D" parent="Body"]
+[node name="ActiveRock" type="Sprite" parent="Body"]
 visible = false
-position = Vector2(-43, 19)
-texture = ExtResource("3_igd8g")
+position = Vector2( -43, 19 )
+texture = ExtResource( 3 )
 
-[node name="ActivePaper" type="Sprite2D" parent="Body"]
+[node name="ActivePaper" type="Sprite" parent="Body"]
 visible = false
-position = Vector2(-30, 24)
+position = Vector2( -30, 24 )
 rotation = -1.5708
-texture = ExtResource("4_877jw")
+texture = ExtResource( 4 )
 
-[node name="ActiveScissor" type="Sprite2D" parent="Body"]
+[node name="ActiveScissor" type="Sprite" parent="Body"]
 visible = false
-position = Vector2(-25, 3)
+position = Vector2( -25, 3 )
 rotation = 1.91986
-texture = ExtResource("5_hqp0f")
+texture = ExtResource( 5 )
 
 [connection signal="gui_input" from="Control" to="." method="_on_control_gui_input"]
 [connection signal="mouse_entered" from="Control" to="." method="_on_control_mouse_entered"]
