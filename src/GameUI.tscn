@@ -25,6 +25,7 @@ align = 1
 valign = 1
 
 [node name="ShufflePawns" type="GridContainer" parent="."]
+visible = false
 margin_left = 300.0
 margin_top = 570.0
 margin_right = 235.0
