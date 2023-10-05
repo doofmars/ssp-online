@@ -20,3 +20,5 @@ color = Color( 0.623529, 0.733333, 0.137255, 1 )
 visible = false
 
 [connection signal="start_singleplayer" from="Menu" to="." method="_on_menu_start_singleplayer"]
+[connection signal="approve_pawns" from="GameUI" to="." method="_on_game_ui_approve_pawns"]
+[connection signal="reshuffle_pawns" from="GameUI" to="." method="_on_game_ui_reshuffle_pawns"]

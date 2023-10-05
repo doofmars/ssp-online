@@ -84,7 +84,8 @@ func _on_pawn_clicked(pawn):
 	elif gameState == "PlaceTrap":
 		pawn.show_item("Trap")
 		get_node("GameUI").get_node("PlaceTrap").hide()
-		gameState = "PlayerTurn"
+		get_node("GameUI").get_node("ShufflePawns").show()
+		gameState = "ShufflePawns"
 	elif gameState == "ShufflePawns":
 		pass
 	elif gameState == "PlayerTurn":
@@ -99,3 +100,9 @@ func _on_pawn_clicked(pawn):
 		pass
 	else:
 		pass
+
+func _on_game_ui_reshuffle_pawns():
+	pass
+
+func _on_game_ui_approve_pawns():
+	pass
