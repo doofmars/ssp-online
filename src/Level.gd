@@ -58,12 +58,17 @@ func _on_menu_start_singleplayer():
 	GameUI.get_node("PlaceFlag").show()
 	var PawnEnemy = load("res://src/PawnEnemy.tscn")
 	var PawnMine = load("res://src/PawnMine.tscn")
+	for x in SQUARE_COUNT_X:
+		boardState.append([])
+		for y in SQUARE_COUNT_Y:
+			boardState[x].append(null)
 	# Place enemy pawns
 	for x in SQUARE_COUNT_X:
 		for y in PAWN_ROWS:
 			var pawn_enemy_node = PawnEnemy.instance()
 			pawn_enemy_node.set_name(str("enemy", x, "-", y))
 			pawn_enemy_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + y * SQUARE_SIZE)
+			boardState[x][y] = pawn_enemy_node
 			add_child(pawn_enemy_node)
 	# Place my pawns
 	for x in SQUARE_COUNT_X:
@@ -73,6 +78,7 @@ func _on_menu_start_singleplayer():
 			pawn_mine_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + SQUARE_SIZE * SQUARE_COUNT_Y - (y + 1) * SQUARE_SIZE)
 			pawn_mine_node.hide_all()
 			pawn_mine_node.connect("pawn_clicked", self, "_on_pawn_clicked")
+			boardState[x][SQUARE_COUNT_Y - (y + 1)] = pawn_mine_node
 			add_child(pawn_mine_node)
 
 func _on_pawn_clicked(pawn):
