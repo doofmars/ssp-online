@@ -88,10 +88,11 @@ func _on_pawn_clicked(pawn):
 		get_node("GameUI").get_node("PlaceTrap").show()
 		gameState = "PlaceTrap"
 	elif gameState == "PlaceTrap":
-		pawn.show_item("Trap")
-		get_node("GameUI").get_node("PlaceTrap").hide()
-		get_node("GameUI").get_node("ShufflePawns").show()
-		gameState = "ShufflePawns"
+		if pawn.Item == "":
+			pawn.show_item("Trap")
+			get_node("GameUI").get_node("PlaceTrap").hide()
+			get_node("GameUI").get_node("ShufflePawns").show()
+			gameState = "ShufflePawns"
 	elif gameState == "ShufflePawns":
 		pass
 	elif gameState == "PlayerTurn":
