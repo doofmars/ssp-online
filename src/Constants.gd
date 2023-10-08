@@ -15,3 +15,10 @@ enum Types {
     Player,
     Enemy
 }
+
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right
+}

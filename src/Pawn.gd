@@ -4,6 +4,8 @@ signal pawn_clicked
 var type = Constants.Types.Player
 var mouse_over = false
 var item = Constants.Items.Empty
+var posX = -1
+var posY = -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

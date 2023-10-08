@@ -24,6 +24,10 @@ enum GameStates {
 	Draw
 }
 
+var PawnEnemy = load("res://src/PawnEnemy.tscn")
+var PawnMine = load("res://src/PawnMine.tscn")
+var MoveSpot = load("res://src/MoveSpot.tscn")
+
 var gameState = GameStates.PlaceFlag
 
 # Called when the node enters the scene tree for the first time.
@@ -66,8 +70,6 @@ func _on_menu_start_singleplayer():
 	var GameUI = get_node("GameUI")
 	GameUI.show()
 	GameUI.get_node("PlaceFlag").show()
-	var PawnEnemy = load("res://src/PawnEnemy.tscn")
-	var PawnMine = load("res://src/PawnMine.tscn")
 	for x in SQUARE_COUNT_X:
 		boardState.append([])
 		for y in SQUARE_COUNT_Y:
@@ -79,6 +81,12 @@ func _on_menu_start_singleplayer():
 			pawn_enemy_node.set_name(str("enemy", x, "-", y))
 			pawn_enemy_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + y * SQUARE_SIZE)
 			pawn_enemy_node.type = Constants.Types.Enemy
+			pawn_enemy_node.posX = x
+			pawn_enemy_node.posY = y
+			if x == 0 and y == 0:
+				pawn_enemy_node.set_item(Constants.Items.Flag)
+			if x == 0 and y == 1:
+				pawn_enemy_node.set_item(Constants.Items.Trap)
 			boardState[x][y] = pawn_enemy_node
 			add_child(pawn_enemy_node)
 	# Place my pawns
@@ -87,6 +95,8 @@ func _on_menu_start_singleplayer():
 			var pawn_mine_node = PawnMine.instance()
 			pawn_mine_node.set_name(str("mine", x, "-", y))
 			pawn_mine_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + SQUARE_SIZE * SQUARE_COUNT_Y - (y + 1) * SQUARE_SIZE)
+			pawn_mine_node.posX = x
+			pawn_mine_node.posY = SQUARE_COUNT_Y - (y + 1)
 			pawn_mine_node.hide_all()
 			pawn_mine_node.connect("pawn_clicked", self, "_on_pawn_clicked")
 			boardState[x][SQUARE_COUNT_Y - (y + 1)] = pawn_mine_node
@@ -108,6 +118,9 @@ func _on_pawn_clicked(pawn):
 	elif gameState == GameStates.ShufflePawns:
 		pass
 	elif gameState == GameStates.PlayerTurn:
+		if can_pawn_move(pawn):
+			clear_pawn_moves()
+			show_pawn_moves(pawn)
 		pass
 	elif gameState == GameStates.EnemyTurn:
 		pass
@@ -127,6 +140,39 @@ func shuffle_pawns():
 			var pawn = boardState[x][y]
 			if pawn != null and pawn.item != Constants.Items.Trap and pawn.item != Constants.Items.Flag:
 				set_random_item(pawn)
+
+func can_pawn_move(pawn) -> bool:
+	if pawn.item == Constants.Items.Flag or pawn.item == Constants.Items.Trap:
+		return false
+	else:
+		return true
+
+func clear_pawn_moves():
+	for node in get_children():
+		if "move_spot" in node.name:
+			node.queue_free()
+
+func show_pawn_moves(pawn):
+	show_pawn_move(pawn.posX + 1, pawn.posY, pawn)
+	show_pawn_move(pawn.posX - 1, pawn.posY, pawn)
+	show_pawn_move(pawn.posX, pawn.posY + 1, pawn)
+	show_pawn_move(pawn.posX, pawn.posY - 1, pawn)
+
+func show_pawn_move(x, y, pawn) -> void:
+	if x < 0 or x >= SQUARE_COUNT_X or y < 0 or y >= SQUARE_COUNT_Y:
+		return
+	if boardState[x][y] == null or boardState[x][y].type != pawn.type:
+		var move_spot = MoveSpot.instance()
+		move_spot.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE + SQUARE_SIZE/2, BOARD_POS_Y + y * SQUARE_SIZE + SQUARE_SIZE/2)
+		move_spot.connect("move_spot_clicked", self, "_on_move_clicked")
+		move_spot.name = str("move_spot", x, "-", y)
+		move_spot.posX = x
+		move_spot.posY = y
+		move_spot.pawn = pawn
+		add_child(move_spot)
+
+func _on_move_clicked(move_spot):
+	print(str("circle clicked", move_spot))
 
 func _on_game_ui_reshuffle_pawns():
 	if gameState == GameStates.ShufflePawns:
