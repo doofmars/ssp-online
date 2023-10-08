@@ -34,7 +34,8 @@ func set_item(state_enum):
 func _on_control_gui_input(event):
 	if event is InputEventMouseButton:
 		if mouse_over and event.pressed:
-			print(str("Clicked On Object ", name, " ", Constants.Types.keys()[type], " -> ", Constants.Items.keys()[item]))
+			if OS.is_debug_build():
+				print(str("Clicked On Object ", name, " ", Constants.Types.keys()[type], " -> ", Constants.Items.keys()[item]))
 			emit_signal("pawn_clicked", self)
 
 

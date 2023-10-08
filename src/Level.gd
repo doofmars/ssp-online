@@ -52,7 +52,15 @@ func _ready():
 				square.color = SQUARE_COLOR_2
 			
 			add_child(square)
+	if OS.is_debug_build():
+		skip_game()
 
+func skip_game():
+	get_node("Menu").hide()
+	_on_menu_start_singleplayer()
+	_on_pawn_clicked(boardState[2][5])
+	_on_pawn_clicked(boardState[2][4])
+	_on_game_ui_approve_pawns()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
