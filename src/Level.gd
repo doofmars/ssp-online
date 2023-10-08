@@ -11,10 +11,20 @@ var SQUARE_COLOR_1 = "c6d878"
 var SQUARE_COLOR_2 = "9fbb23"
 var PAWN_ROWS = 2
 
-var states = ["HiddenRock", "HiddenPaper", "HiddenScissor"]
 var boardState = []
-var gameStates = ["PlaceFlag", "PlaceTrap", "ShufflePawns", "PlayerTurn", "EnemyTurn", "PlayerWin", "EnemyWin", "Draw"]
-var gameState = "PlaceFlag"
+var shuffle_states = [Constants.Items.HiddenRock, Constants.Items.HiddenScissor, Constants.Items.HiddenPaper]
+enum GameStates {
+	PlaceFlag,
+	PlaceTrap,
+	ShufflePawns,
+	PlayerTurn,
+	EnemyTurn,
+	PlayerWin,
+	EnemyWin,
+	Draw
+}
+
+var gameState = GameStates.PlaceFlag
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -49,8 +59,8 @@ func _on_run_game():
 	pass
 
 func set_random_item(pawn):
-	var state = states[randi() % states.size()]
-	pawn.show_item(state)
+	var state = shuffle_states[randi() % shuffle_states.size()]
+	pawn.set_item(state)
 
 func _on_menu_start_singleplayer():
 	var GameUI = get_node("GameUI")
@@ -68,6 +78,7 @@ func _on_menu_start_singleplayer():
 			var pawn_enemy_node = PawnEnemy.instance()
 			pawn_enemy_node.set_name(str("enemy", x, "-", y))
 			pawn_enemy_node.position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + y * SQUARE_SIZE)
+			pawn_enemy_node.type = Constants.Types.Enemy
 			boardState[x][y] = pawn_enemy_node
 			add_child(pawn_enemy_node)
 	# Place my pawns
@@ -82,34 +93,46 @@ func _on_menu_start_singleplayer():
 			add_child(pawn_mine_node)
 
 func _on_pawn_clicked(pawn):
-	if gameState == "PlaceFlag":
-		pawn.show_item("Flag")
+	if gameState == GameStates.PlaceFlag:
+		pawn.set_item(Constants.Items.Flag)
 		get_node("GameUI").get_node("PlaceFlag").hide()
 		get_node("GameUI").get_node("PlaceTrap").show()
-		gameState = "PlaceTrap"
-	elif gameState == "PlaceTrap":
-		if pawn.Item == "":
-			pawn.show_item("Trap")
+		gameState = GameStates.PlaceTrap
+	elif gameState == GameStates.PlaceTrap:
+		if pawn.item == Constants.Items.Empty:
+			pawn.set_item(Constants.Items.Trap)
 			get_node("GameUI").get_node("PlaceTrap").hide()
 			get_node("GameUI").get_node("ShufflePawns").show()
-			gameState = "ShufflePawns"
-	elif gameState == "ShufflePawns":
+			shuffle_pawns()
+			gameState = GameStates.ShufflePawns
+	elif gameState == GameStates.ShufflePawns:
 		pass
-	elif gameState == "PlayerTurn":
+	elif gameState == GameStates.PlayerTurn:
 		pass
-	elif gameState == "EnemyTurn":
+	elif gameState == GameStates.EnemyTurn:
 		pass
-	elif gameState == "PlayerWin":
+	elif gameState == GameStates.PlayerWin:
 		pass
-	elif gameState == "EnemyWin":
+	elif gameState == GameStates.EnemyWin:
 		pass
-	elif gameState == "Draw":
+	elif gameState == GameStates.Draw:
 		pass
 	else:
 		pass
 
+func shuffle_pawns():
+	var number_of_pairs = SQUARE_COUNT_X * PAWN_ROWS - 2
+	for x in SQUARE_COUNT_X:
+		for y in SQUARE_COUNT_Y:
+			var pawn = boardState[x][y]
+			if pawn != null and pawn.item != Constants.Items.Trap and pawn.item != Constants.Items.Flag:
+				set_random_item(pawn)
+
 func _on_game_ui_reshuffle_pawns():
-	pass
+	if gameState == GameStates.ShufflePawns:
+		shuffle_pawns()
 
 func _on_game_ui_approve_pawns():
-	pass
+	if gameState == GameStates.ShufflePawns:
+		get_node("GameUI").get_node("ShufflePawns").hide()
+		gameState = GameStates.PlayerTurn
