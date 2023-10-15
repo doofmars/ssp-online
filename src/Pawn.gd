@@ -1,8 +1,11 @@
-extends Node2D
+extends KinematicBody2D
 signal pawn_clicked
 
+export (int) var speed = 800
+onready var target = position
+var velocity = Vector2()
+
 var type = Constants.Types.Player
-var mouse_over = false
 var item = Constants.Items.Empty
 var posX = -1
 var posY = -1
@@ -31,17 +34,16 @@ func set_item(state_enum):
 	item = state_enum
 
 
-func _on_control_gui_input(event):
+func _physics_process(delta):
+	velocity = position.direction_to(target) * speed
+	# look_at(target)
+	if position.distance_to(target) > 5:
+		velocity = move_and_slide(velocity)
+
+
+func _on_Pawn_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
-		if mouse_over and event.pressed:
+		if event.pressed:
 			if OS.is_debug_build():
 				print(str("Clicked On Object ", name, " ", Constants.Types.keys()[type], " -> ", Constants.Items.keys()[item]))
 			emit_signal("pawn_clicked", self)
-
-
-func _on_control_mouse_exited():
-	mouse_over = false
-
-
-func _on_control_mouse_entered():
-	mouse_over = true

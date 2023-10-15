@@ -1,7 +1,6 @@
 extends Node2D
 signal move_spot_clicked
 
-var mouse_over = false
 var direction = Constants.Direction.Up
 var pawn = null
 var posX = -1
@@ -22,16 +21,9 @@ func _draw():
 	# Draw a circle
 	draw_circle(Vector2(0, 0), radius, color)
 
-func _on_Control_mouse_entered():
-	color = Color(0, 1, 0)
-	mouse_over = true
 
-func _on_Control_mouse_exited():
-	color = Color(1, 1, 1)
-	mouse_over = false
-
-func _on_Control_gui_input(event):
+func _on_Node2D_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
-		if mouse_over and event.pressed:
+		if event.pressed:
 			print(str("Clicked On MoveSpot ", name, " ", Constants.Direction.keys()[direction]))
 			emit_signal("move_spot_clicked", self)

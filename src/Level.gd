@@ -33,6 +33,7 @@ var gameState = GameStates.PlaceFlag
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	var border = ColorRect.new()
+	border.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	print(SQUARE_SIZE * SQUARE_COUNT_X + BORDER_WIDTH*2)
 	border.rect_size = Vector2(float(SQUARE_SIZE * SQUARE_COUNT_X + BORDER_WIDTH*2), float(SQUARE_SIZE * SQUARE_COUNT_Y + BORDER_WIDTH*2))
 	border.rect_position = Vector2(BOARD_POS_X - BORDER_WIDTH, BOARD_POS_Y - BORDER_WIDTH)
@@ -42,6 +43,7 @@ func _ready():
 	for x in SQUARE_COUNT_X:
 		for y in SQUARE_COUNT_Y:
 			var square = ColorRect.new()
+			square.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			square.rect_position = Vector2(BOARD_POS_X + x * SQUARE_SIZE, BOARD_POS_Y + y * SQUARE_SIZE)
 			square.rect_size = Vector2(SQUARE_SIZE, SQUARE_SIZE)
 			square.name = str("square", x, "-", y)
@@ -180,7 +182,13 @@ func show_pawn_move(x, y, pawn) -> void:
 		add_child(move_spot)
 
 func _on_move_clicked(move_spot):
-	print(str("circle clicked", move_spot))
+	if gameState == GameStates.PlayerTurn:
+		boardState[move_spot.pawn.posX][move_spot.pawn.posY] = null
+		boardState[move_spot.posX][move_spot.posY] = move_spot.pawn
+		move_spot.pawn.posX = move_spot.posX
+		move_spot.pawn.posY = move_spot.posY
+		move_spot.pawn.target = Vector2(BOARD_POS_X + move_spot.posX * SQUARE_SIZE, BOARD_POS_Y + move_spot.posY * SQUARE_SIZE)
+		clear_pawn_moves()
 
 func _on_game_ui_reshuffle_pawns():
 	if gameState == GameStates.ShufflePawns:
