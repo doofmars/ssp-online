@@ -1,24 +1,24 @@
 class_name Constants
 enum Items {
-    HiddenRock,
-    HiddenPaper,
-    HiddenScissor,
-    ActiveRock,
-    ActivePaper,
-    ActiveScissor,
-    Empty,
-    Flag,
-    Trap
+	HiddenRock,
+	HiddenPaper,
+	HiddenScissor,
+	ActiveRock,
+	ActivePaper,
+	ActiveScissor,
+	Empty,
+	Flag,
+	Trap
 }
 
 enum Types {
-    Player,
-    Enemy
+	Player,
+	Enemy
 }
 
 enum Direction {
-    Up,
-    Down,
-    Left,
-    Right
+	Up,
+	Down,
+	Left,
+	Right
 }
