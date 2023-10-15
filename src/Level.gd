@@ -95,9 +95,9 @@ func _on_menu_start_singleplayer():
 			pawn_enemy_node.posX = x
 			pawn_enemy_node.posY = y
 			if x == 0 and y == 0:
-				pawn_enemy_node.set_item(Constants.Items.Flag)
+				pawn_enemy_node.set_item(Constants.Items.HiddenFlag)
 			if x == 0 and y == 1:
-				pawn_enemy_node.set_item(Constants.Items.Trap)
+				pawn_enemy_node.set_item(Constants.Items.HiddenTrap)
 			boardState[x][y] = pawn_enemy_node
 			add_child(pawn_enemy_node)
 	# Place my pawns
@@ -115,13 +115,13 @@ func _on_menu_start_singleplayer():
 
 func _on_pawn_clicked(pawn):
 	if gameState == GameStates.PlaceFlag:
-		pawn.set_item(Constants.Items.Flag)
+		pawn.set_item(Constants.Items.HiddenFlag)
 		get_node("GameUI").get_node("PlaceFlag").hide()
 		get_node("GameUI").get_node("PlaceTrap").show()
 		gameState = GameStates.PlaceTrap
 	elif gameState == GameStates.PlaceTrap:
 		if pawn.item == Constants.Items.Empty:
-			pawn.set_item(Constants.Items.Trap)
+			pawn.set_item(Constants.Items.HiddenTrap)
 			get_node("GameUI").get_node("PlaceTrap").hide()
 			get_node("GameUI").get_node("ShufflePawns").show()
 			shuffle_pawns()
@@ -149,11 +149,18 @@ func shuffle_pawns():
 	for x in SQUARE_COUNT_X:
 		for y in SQUARE_COUNT_Y:
 			var pawn = boardState[x][y]
-			if pawn != null and pawn.item != Constants.Items.Trap and pawn.item != Constants.Items.Flag:
+			if pawn != null and \
+				pawn.item != Constants.Items.HiddenTrap and \
+				pawn.item != Constants.Items.ActiveTrap and \
+				pawn.item != Constants.Items.HiddenFlag and \
+				pawn.item != Constants.Items.ActiveFlag:
 				set_random_item(pawn)
 
 func can_pawn_move(pawn) -> bool:
-	if pawn.item == Constants.Items.Flag or pawn.item == Constants.Items.Trap:
+	if pawn.item == Constants.Items.HiddenFlag or \
+		pawn.item == Constants.Items.ActiveFlag or \
+		pawn.item == Constants.Items.HiddenTrap or \
+		pawn.item == Constants.Items.ActiveTrap:
 		return false
 	else:
 		return true

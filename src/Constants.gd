@@ -3,12 +3,14 @@ enum Items {
 	HiddenRock,
 	HiddenPaper,
 	HiddenScissor,
+	HiddenTrap,
+	HiddenFlag,
 	ActiveRock,
 	ActivePaper,
 	ActiveScissor,
-	Empty,
-	Flag,
-	Trap
+	ActiveTrap,
+	ActiveFlag,
+	Empty
 }
 
 enum Types {

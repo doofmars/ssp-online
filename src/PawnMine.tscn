@@ -6,7 +6,7 @@
 [ext_resource path="res://assets/paper.png" type="Texture" id=4]
 [ext_resource path="res://assets/scissor.png" type="Texture" id=5]
 [ext_resource path="res://assets/flag.png" type="Texture" id=6]
-[ext_resource path="res://assets/trap.png" type="Texture" id=7]
+[ext_resource path="res://assets/trap_kadse.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 30.5, 29 )
@@ -43,6 +43,17 @@ position = Vector2( -25, 3 )
 rotation = 1.91986
 texture = ExtResource( 5 )
 
+[node name="ActiveTrap" type="Sprite" parent="Body"]
+visible = false
+position = Vector2( -8, 0 )
+texture = ExtResource( 7 )
+
+[node name="ActiveFlag" type="Sprite" parent="Body"]
+visible = false
+position = Vector2( 40, 26 )
+rotation = 1.33343
+texture = ExtResource( 6 )
+
 [node name="HiddenRock" type="Sprite" parent="Body"]
 visible = false
 position = Vector2( 7, 24 )
@@ -58,15 +69,15 @@ visible = false
 position = Vector2( 12, 17 )
 texture = ExtResource( 5 )
 
-[node name="Flag" type="Sprite" parent="Body"]
+[node name="HiddenTrap" type="Sprite" parent="Body"]
+visible = false
+position = Vector2( -7, 0 )
+texture = ExtResource( 7 )
+
+[node name="HiddenFlag" type="Sprite" parent="Body"]
 visible = false
 position = Vector2( 28, 14 )
 rotation = 0.666716
 texture = ExtResource( 6 )
-
-[node name="Trap" type="Sprite" parent="Body"]
-visible = false
-position = Vector2( -8, 0 )
-texture = ExtResource( 7 )
 
 [connection signal="input_event" from="." to="." method="_on_Pawn_input_event"]

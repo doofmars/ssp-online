@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://src/Pawn.gd" type="Script" id=1]
 [ext_resource path="res://assets/blueguy.png" type="Texture" id=2]
 [ext_resource path="res://assets/rock.png" type="Texture" id=3]
 [ext_resource path="res://assets/paper.png" type="Texture" id=4]
 [ext_resource path="res://assets/scissor.png" type="Texture" id=5]
+[ext_resource path="res://assets/flag.png" type="Texture" id=6]
+[ext_resource path="res://assets/trap_blueguy.png" type="Texture" id=7]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 31.75, 42 )
@@ -39,5 +41,41 @@ visible = false
 position = Vector2( -25, 3 )
 rotation = 1.91986
 texture = ExtResource( 5 )
+
+[node name="ActiveTrap" type="Sprite" parent="Body"]
+visible = false
+texture = ExtResource( 7 )
+
+[node name="ActiveFlag" type="Sprite" parent="Body"]
+visible = false
+position = Vector2( 41, 45 )
+rotation = 1.69821
+texture = ExtResource( 6 )
+
+[node name="HiddenRock" type="Sprite" parent="Body"]
+visible = false
+position = Vector2( -14, 28 )
+texture = ExtResource( 3 )
+
+[node name="HiddenPaper" type="Sprite" parent="Body"]
+visible = false
+position = Vector2( 2, 37 )
+rotation = -1.5708
+texture = ExtResource( 4 )
+
+[node name="HiddenScissor" type="Sprite" parent="Body"]
+visible = false
+position = Vector2( 7, 18 )
+rotation = 1.91986
+texture = ExtResource( 5 )
+
+[node name="HiddenTrap" type="Sprite" parent="Body"]
+visible = false
+texture = ExtResource( 7 )
+
+[node name="HiddenFlag" type="Sprite" parent="Body"]
+visible = false
+position = Vector2( -13, 9 )
+texture = ExtResource( 6 )
 
 [connection signal="input_event" from="." to="." method="_on_Pawn_input_event"]

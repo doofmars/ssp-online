@@ -31,6 +31,9 @@ func set_item(state_enum):
 		get_node("Body").get_node(Constants.Items.keys()[item]).hide()
 	if type == Constants.Types.Player:
 		get_node("Body").get_node(Constants.Items.keys()[state_enum]).show()
+	else:
+		if !("Hidden" in Constants.Items.keys()[state_enum]):
+			get_node("Body").get_node(Constants.Items.keys()[state_enum]).show()
 	item = state_enum
 
 
