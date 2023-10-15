@@ -36,6 +36,24 @@ func set_item(state_enum):
 			get_node("Body").get_node(Constants.Items.keys()[state_enum]).show()
 	item = state_enum
 
+func show_item():
+	if "Hidden" in Constants.Items.keys()[item]:
+		var active_version = Constants.Items.Empty
+		if item == Constants.Items.HiddenRock:
+			active_version = Constants.Items.ActiveRock
+		elif item == Constants.Items.HiddenPaper:
+			active_version = Constants.Items.ActivePaper
+		elif item == Constants.Items.HiddenScissor:
+			active_version = Constants.Items.ActiveScissor
+		elif item == Constants.Items.HiddenFlag:
+			active_version = Constants.Items.ActiveFlag
+		elif item == Constants.Items.HiddenTrap:
+			active_version = Constants.Items.ActiveTrap
+		get_node("Body").get_node(Constants.Items.keys()[item]).hide()
+		item = active_version
+		get_node("Body").get_node(Constants.Items.keys()[item]).show()
+
+
 
 func _physics_process(delta):
 	if position.distance_to(target) > 10:

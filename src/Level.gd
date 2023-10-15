@@ -214,6 +214,8 @@ func fight(attacker, defender):
 	var attacker_wins = true
 	attacker.target = Vector2(BOARD_POS_X + (SQUARE_COUNT_X + 1) * SQUARE_SIZE, BOARD_POS_Y + (SQUARE_COUNT_Y / 2 - 0.5) * SQUARE_SIZE)
 	defender.target = Vector2(BOARD_POS_X + (SQUARE_COUNT_X + 2) * SQUARE_SIZE, BOARD_POS_Y + (SQUARE_COUNT_Y / 2 - 0.5) * SQUARE_SIZE)
+	attacker.show_item()
+	defender.show_item()
 	yield(get_tree().create_timer(2.0), "timeout")
 	if attacker_wins:
 		boardState[defender.posX][defender.posY] = attacker
