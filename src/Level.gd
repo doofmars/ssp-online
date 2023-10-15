@@ -19,6 +19,8 @@ enum GameStates {
 	ShufflePawns,
 	PlayerTurn,
 	EnemyTurn,
+	Fight,
+	SameWeapon,
 	PlayerWin,
 	EnemyWin,
 	Draw
@@ -34,7 +36,6 @@ var gameState = GameStates.PlaceFlag
 func _ready():
 	var border = ColorRect.new()
 	border.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	print(SQUARE_SIZE * SQUARE_COUNT_X + BORDER_WIDTH*2)
 	border.rect_size = Vector2(float(SQUARE_SIZE * SQUARE_COUNT_X + BORDER_WIDTH*2), float(SQUARE_SIZE * SQUARE_COUNT_Y + BORDER_WIDTH*2))
 	border.rect_position = Vector2(BOARD_POS_X - BORDER_WIDTH, BOARD_POS_Y - BORDER_WIDTH)
 
@@ -181,14 +182,41 @@ func show_pawn_move(x, y, pawn) -> void:
 		move_spot.pawn = pawn
 		add_child(move_spot)
 
-func _on_move_clicked(move_spot):
+func _on_move_clicked(move_spot) -> void:
 	if gameState == GameStates.PlayerTurn:
-		boardState[move_spot.pawn.posX][move_spot.pawn.posY] = null
-		boardState[move_spot.posX][move_spot.posY] = move_spot.pawn
-		move_spot.pawn.posX = move_spot.posX
-		move_spot.pawn.posY = move_spot.posY
-		move_spot.pawn.target = Vector2(BOARD_POS_X + move_spot.posX * SQUARE_SIZE, BOARD_POS_Y + move_spot.posY * SQUARE_SIZE)
-		clear_pawn_moves()
+		if boardState[move_spot.posX][move_spot.posY] == null:
+			boardState[move_spot.pawn.posX][move_spot.pawn.posY] = null
+			boardState[move_spot.posX][move_spot.posY] = move_spot.pawn
+			move_spot.pawn.posX = move_spot.posX
+			move_spot.pawn.posY = move_spot.posY
+			move_spot.pawn.target = Vector2(BOARD_POS_X + move_spot.posX * SQUARE_SIZE, BOARD_POS_Y + move_spot.posY * SQUARE_SIZE)
+			clear_pawn_moves()
+		else:
+			if boardState[move_spot.posX][move_spot.posY].type == move_spot.pawn.type:
+				return
+			print("Fight")
+			gameState = GameStates.Fight
+			var attacker = move_spot.pawn
+			var defender = boardState[move_spot.posX][move_spot.posY]
+			clear_pawn_moves()
+			fight(attacker, defender)
+
+
+# Fight logic
+func fight(attacker, defender):
+	var attacker_wins = true
+	attacker.target = Vector2(BOARD_POS_X + (SQUARE_COUNT_X + 1) * SQUARE_SIZE, BOARD_POS_Y + (SQUARE_COUNT_Y / 2 - 0.5) * SQUARE_SIZE)
+	defender.target = Vector2(BOARD_POS_X + (SQUARE_COUNT_X + 2) * SQUARE_SIZE, BOARD_POS_Y + (SQUARE_COUNT_Y / 2 - 0.5) * SQUARE_SIZE)
+	yield(get_tree().create_timer(2.0), "timeout")
+	if attacker_wins:
+		boardState[defender.posX][defender.posY] = attacker
+		boardState[attacker.posX][attacker.posY] = null
+		attacker.posX = defender.posX
+		attacker.posY = defender.posY
+		attacker.target = Vector2(BOARD_POS_X + defender.posX * SQUARE_SIZE, BOARD_POS_Y + defender.posY * SQUARE_SIZE)
+		defender.queue_free()
+		gameState = GameStates.PlayerTurn
+
 
 func _on_game_ui_reshuffle_pawns():
 	if gameState == GameStates.ShufflePawns:
