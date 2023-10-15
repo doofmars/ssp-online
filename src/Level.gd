@@ -214,6 +214,7 @@ func fight(attacker, defender):
 		attacker.posX = defender.posX
 		attacker.posY = defender.posY
 		attacker.target = Vector2(BOARD_POS_X + defender.posX * SQUARE_SIZE, BOARD_POS_Y + defender.posY * SQUARE_SIZE)
+		yield(get_tree().create_timer(0.5), "timeout")
 		defender.queue_free()
 		gameState = GameStates.PlayerTurn
 

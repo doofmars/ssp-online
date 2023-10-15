@@ -35,8 +35,11 @@ func set_item(state_enum):
 
 
 func _physics_process(delta):
-	velocity = position.direction_to(target) * speed
-	# look_at(target)
+	if position.distance_to(target) > 10:
+		velocity = position.direction_to(target) * speed
+	else:
+		# Move slower if close
+		velocity = position.direction_to(target) * speed / 5
 	if position.distance_to(target) > 5:
 		velocity = move_and_slide(velocity)
 
