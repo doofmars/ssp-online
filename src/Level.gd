@@ -206,18 +206,18 @@ func _on_move_clicked(move_spot) -> void:
 			var attacker = move_spot.pawn
 			var defender = boardState[move_spot.posX][move_spot.posY]
 			clear_pawn_moves()
-			fight(attacker, defender)
+			initiate_fight(attacker, defender)
 
 
 # Fight logic
-func fight(attacker, defender):
+func initiate_fight(attacker, defender):
 	var attacker_wins = true
 	attacker.target = Vector2(BOARD_POS_X + (SQUARE_COUNT_X + 1) * SQUARE_SIZE, BOARD_POS_Y + (SQUARE_COUNT_Y / 2 - 0.5) * SQUARE_SIZE)
 	defender.target = Vector2(BOARD_POS_X + (SQUARE_COUNT_X + 2) * SQUARE_SIZE, BOARD_POS_Y + (SQUARE_COUNT_Y / 2 - 0.5) * SQUARE_SIZE)
 	attacker.show_item()
 	defender.show_item()
 	yield(get_tree().create_timer(2.0), "timeout")
-	if attacker_wins:
+	if attacker_wins(attacker, defender):
 		boardState[defender.posX][defender.posY] = attacker
 		boardState[attacker.posX][attacker.posY] = null
 		attacker.posX = defender.posX
@@ -226,7 +226,55 @@ func fight(attacker, defender):
 		yield(get_tree().create_timer(0.5), "timeout")
 		defender.queue_free()
 		gameState = GameStates.PlayerTurn
+	else:
+		boardState[attacker.posX][attacker.posY] = null
+		defender.target = Vector2(BOARD_POS_X + defender.posX * SQUARE_SIZE, BOARD_POS_Y + defender.posY * SQUARE_SIZE)
+		attacker.queue_free()
+		gameState = GameStates.PlayerTurn
 
+func attacker_wins(attacker, defender) -> bool:
+	if defender.item == Constants.Items.HiddenFlag or \
+		defender.item == Constants.Items.ActiveFlag:
+		attacker.set_item(Constants.Items.ActiveFlag)
+		return true
+	if defender.item == Constants.Items.HiddenTrap or \
+		defender.item == Constants.Items.ActiveTrap:
+		return false
+	if attacker.item == Constants.Items.HiddenRock or \
+		attacker.item == Constants.Items.ActiveRock:
+		if defender.item == Constants.Items.HiddenScissor or \
+			defender.item == Constants.Items.ActiveScissor:
+			return true
+		elif defender.item == Constants.Items.HiddenPaper or \
+			defender.item == Constants.Items.ActivePaper:
+			return false
+		else:
+			return draw(attacker, defender)
+	elif attacker.item == Constants.Items.HiddenScissor or \
+		attacker.item == Constants.Items.ActiveScissor:
+		if defender.item == Constants.Items.HiddenPaper or \
+			defender.item == Constants.Items.ActivePaper:
+			return true
+		elif defender.item == Constants.Items.HiddenRock or \
+			defender.item == Constants.Items.ActiveRock:
+			return false
+		else:
+			return draw(attacker, defender)
+	elif attacker.item == Constants.Items.HiddenPaper or \
+		attacker.item == Constants.Items.ActivePaper:
+		if defender.item == Constants.Items.HiddenRock or \
+			defender.item == Constants.Items.ActiveRock:
+			return true
+		elif defender.item == Constants.Items.HiddenScissor or \
+			defender.item == Constants.Items.ActiveScissor:
+			return false
+		else:
+			return true
+	else:
+		return false
+
+func draw(attacker, defender):
+	return true
 
 func _on_game_ui_reshuffle_pawns():
 	if gameState == GameStates.ShufflePawns:
