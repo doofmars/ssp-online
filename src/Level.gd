@@ -230,6 +230,7 @@ func initiate_fight(attacker, defender):
 
 func attacker_wins(attacker, defender) -> bool:
 	if defender.item == Constants.Items.Flag:
+		defender.set_item(Constants.ItemStatus.Active, Constants.Items.Empty)
 		attacker.set_item(Constants.ItemStatus.Active, Constants.Items.Flag)
 		return true
 	if defender.item == Constants.Items.Trap:

@@ -32,8 +32,12 @@ func set_item(status, new_item):
 		get_node("Body").get_node(item_to_str(item_status, item)).hide()
 	if type == Constants.Types.Player:
 		get_node("Body").get_node(item_to_str(status, new_item)).show()
-	else:
-		if status != Constants.ItemStatus.Hidden:
+	else: # Enemy
+		if new_item == Constants.Items.Empty:
+			# Empty the enemies item
+			get_node("Body").get_node(item_to_str(item_status, item)).hide()
+		elif status != Constants.ItemStatus.Hidden:
+			# Show the enemies item if it is not hidden
 			get_node("Body").get_node(item_to_str(status, new_item)).show()
 	item = new_item
 	item_status = status
