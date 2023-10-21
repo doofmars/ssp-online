@@ -57,6 +57,8 @@ func _ready():
 			add_child(square)
 	if OS.is_debug_build():
 		skip_game()
+	else:
+		randomize()
 
 func skip_game():
 	get_node("Menu").hide()
