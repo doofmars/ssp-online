@@ -12,7 +12,7 @@ var SQUARE_COLOR_2 = "9fbb23"
 var PAWN_ROWS = 2
 
 var boardState = []
-var shuffle_states = [Constants.Items.HiddenRock, Constants.Items.HiddenScissor, Constants.Items.HiddenPaper]
+var shuffle_states = [Constants.Items.Rock, Constants.Items.Paper, Constants.Items.Scissor]
 enum GameStates {
 	PlaceFlag,
 	PlaceTrap,
@@ -75,7 +75,7 @@ func _on_run_game():
 
 func set_random_item(pawn):
 	var state = shuffle_states[randi() % shuffle_states.size()]
-	pawn.set_item(state)
+	pawn.set_item(Constants.ItemStatus.Hidden, state)
 
 func _on_menu_start_singleplayer():
 	var GameUI = get_node("GameUI")
@@ -95,9 +95,9 @@ func _on_menu_start_singleplayer():
 			pawn_enemy_node.posX = x
 			pawn_enemy_node.posY = y
 			if x == 0 and y == 0:
-				pawn_enemy_node.set_item(Constants.Items.HiddenFlag)
+				pawn_enemy_node.set_item(Constants.ItemStatus.Hidden, Constants.Items.Flag)
 			if x == 0 and y == 1:
-				pawn_enemy_node.set_item(Constants.Items.HiddenTrap)
+				pawn_enemy_node.set_item(Constants.ItemStatus.Hidden, Constants.Items.Trap)
 			boardState[x][y] = pawn_enemy_node
 			add_child(pawn_enemy_node)
 	# Place my pawns
@@ -115,13 +115,13 @@ func _on_menu_start_singleplayer():
 
 func _on_pawn_clicked(pawn):
 	if gameState == GameStates.PlaceFlag:
-		pawn.set_item(Constants.Items.HiddenFlag)
+		pawn.set_item(Constants.ItemStatus.Hidden, Constants.Items.Flag)
 		get_node("GameUI").get_node("PlaceFlag").hide()
 		get_node("GameUI").get_node("PlaceTrap").show()
 		gameState = GameStates.PlaceTrap
 	elif gameState == GameStates.PlaceTrap:
 		if pawn.item == Constants.Items.Empty:
-			pawn.set_item(Constants.Items.HiddenTrap)
+			pawn.set_item(Constants.ItemStatus.Hidden, Constants.Items.Trap)
 			get_node("GameUI").get_node("PlaceTrap").hide()
 			get_node("GameUI").get_node("ShufflePawns").show()
 			shuffle_pawns()
@@ -150,17 +150,13 @@ func shuffle_pawns():
 		for y in SQUARE_COUNT_Y:
 			var pawn = boardState[x][y]
 			if pawn != null and \
-				pawn.item != Constants.Items.HiddenTrap and \
-				pawn.item != Constants.Items.ActiveTrap and \
-				pawn.item != Constants.Items.HiddenFlag and \
-				pawn.item != Constants.Items.ActiveFlag:
+				pawn.item != Constants.Items.Trap and \
+				pawn.item != Constants.Items.Flag:
 				set_random_item(pawn)
 
 func can_pawn_move(pawn) -> bool:
-	if pawn.item == Constants.Items.HiddenFlag or \
-		pawn.item == Constants.Items.ActiveFlag or \
-		pawn.item == Constants.Items.HiddenTrap or \
-		pawn.item == Constants.Items.ActiveTrap:
+	if pawn.item == Constants.Items.Trap or \
+		pawn.item == Constants.Items.Flag:
 		return false
 	else:
 		return true
@@ -233,40 +229,29 @@ func initiate_fight(attacker, defender):
 		gameState = GameStates.PlayerTurn
 
 func attacker_wins(attacker, defender) -> bool:
-	if defender.item == Constants.Items.HiddenFlag or \
-		defender.item == Constants.Items.ActiveFlag:
-		attacker.set_item(Constants.Items.ActiveFlag)
+	if defender.item == Constants.Items.Flag:
+		attacker.set_item(Constants.ItemStatus.Active, Constants.Items.Flag)
 		return true
-	if defender.item == Constants.Items.HiddenTrap or \
-		defender.item == Constants.Items.ActiveTrap:
+	if defender.item == Constants.Items.Trap:
 		return false
-	if attacker.item == Constants.Items.HiddenRock or \
-		attacker.item == Constants.Items.ActiveRock:
-		if defender.item == Constants.Items.HiddenScissor or \
-			defender.item == Constants.Items.ActiveScissor:
+	if attacker.item == Constants.Items.Rock:
+		if defender.item == Constants.Items.Scissor:
 			return true
-		elif defender.item == Constants.Items.HiddenPaper or \
-			defender.item == Constants.Items.ActivePaper:
+		elif defender.item == Constants.Items.Paper:
 			return false
 		else:
 			return draw(attacker, defender)
-	elif attacker.item == Constants.Items.HiddenScissor or \
-		attacker.item == Constants.Items.ActiveScissor:
-		if defender.item == Constants.Items.HiddenPaper or \
-			defender.item == Constants.Items.ActivePaper:
+	elif attacker.item == Constants.Items.Scissor:
+		if defender.item == Constants.Items.Paper:
 			return true
-		elif defender.item == Constants.Items.HiddenRock or \
-			defender.item == Constants.Items.ActiveRock:
+		elif defender.item == Constants.Items.Rock:
 			return false
 		else:
 			return draw(attacker, defender)
-	elif attacker.item == Constants.Items.HiddenPaper or \
-		attacker.item == Constants.Items.ActivePaper:
-		if defender.item == Constants.Items.HiddenRock or \
-			defender.item == Constants.Items.ActiveRock:
+	elif attacker.item == Constants.Items.Paper:
+		if defender.item == Constants.Items.Rock:
 			return true
-		elif defender.item == Constants.Items.HiddenScissor or \
-			defender.item == Constants.Items.ActiveScissor:
+		elif defender.item == Constants.Items.Scissor:
 			return false
 		else:
 			return true

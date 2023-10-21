@@ -1,15 +1,15 @@
 class_name Constants
+enum ItemStatus {
+	Hidden,
+	Active
+}
+
 enum Items {
-	HiddenRock,
-	HiddenPaper,
-	HiddenScissor,
-	HiddenTrap,
-	HiddenFlag,
-	ActiveRock,
-	ActivePaper,
-	ActiveScissor,
-	ActiveTrap,
-	ActiveFlag,
+	Rock,
+	Paper,
+	Scissor,
+	Trap,
+	Flag,
 	Empty
 }
 

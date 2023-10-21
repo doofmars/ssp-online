@@ -7,6 +7,7 @@ var velocity = Vector2()
 
 var type = Constants.Types.Player
 var item = Constants.Items.Empty
+var item_status = Constants.ItemStatus.Hidden
 var posX = -1
 var posY = -1
 
@@ -26,33 +27,27 @@ func hide_all():
 		node.hide()
 
 
-func set_item(state_enum):
+func set_item(status, new_item):
 	if type == Constants.Types.Player and item != Constants.Items.Empty:
-		get_node("Body").get_node(Constants.Items.keys()[item]).hide()
+		get_node("Body").get_node(item_to_str(item_status, item)).hide()
 	if type == Constants.Types.Player:
-		get_node("Body").get_node(Constants.Items.keys()[state_enum]).show()
+		get_node("Body").get_node(item_to_str(status, new_item)).show()
 	else:
-		if !("Hidden" in Constants.Items.keys()[state_enum]):
-			get_node("Body").get_node(Constants.Items.keys()[state_enum]).show()
-	item = state_enum
+		if status != Constants.ItemStatus.Hidden:
+			get_node("Body").get_node(item_to_str(status, new_item)).show()
+	item = new_item
+	item_status = status
+
 
 func show_item():
-	if "Hidden" in Constants.Items.keys()[item]:
-		var active_version = Constants.Items.Empty
-		if item == Constants.Items.HiddenRock:
-			active_version = Constants.Items.ActiveRock
-		elif item == Constants.Items.HiddenPaper:
-			active_version = Constants.Items.ActivePaper
-		elif item == Constants.Items.HiddenScissor:
-			active_version = Constants.Items.ActiveScissor
-		elif item == Constants.Items.HiddenFlag:
-			active_version = Constants.Items.ActiveFlag
-		elif item == Constants.Items.HiddenTrap:
-			active_version = Constants.Items.ActiveTrap
-		get_node("Body").get_node(Constants.Items.keys()[item]).hide()
-		item = active_version
-		get_node("Body").get_node(Constants.Items.keys()[item]).show()
+	if item_status == Constants.ItemStatus.Hidden:
+		get_node("Body").get_node(item_to_str(item_status, item)).hide()
+		item_status == Constants.ItemStatus.Active
+		get_node("Body").get_node(item_to_str(item_status, item)).show()
 
+
+func item_to_str(status, item):
+	return str(Constants.ItemStatus.keys()[status], Constants.Items.keys()[item])
 
 
 func _physics_process(delta):
@@ -69,5 +64,8 @@ func _on_Pawn_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
 		if event.pressed:
 			if OS.is_debug_build():
-				print(str("Clicked On Object ", name, " ", Constants.Types.keys()[type], " -> ", Constants.Items.keys()[item]))
+				print(str("Clicked On Object ", name, " ", Constants.Types.keys()[type], " -> ", Constants.ItemStatus.keys()[item_status], Constants.Items.keys()[item]))
 			emit_signal("pawn_clicked", self)
+
+func _to_string():
+	return str(name, " ", Constants.Types.keys()[type], " -> ", Constants.ItemStatus.keys()[item_status], Constants.Items.keys()[item])
