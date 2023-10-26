@@ -29,8 +29,11 @@ enum GameStates {
 var PawnEnemy = load("res://src/PawnEnemy.tscn")
 var PawnMine = load("res://src/PawnMine.tscn")
 var MoveSpot = load("res://src/MoveSpot.tscn")
-
+var Enemy = load("res://src/Enemy.gd")
+var enemy_instance = null
 var gameState = GameStates.PlaceFlag
+
+signal decide_move
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -55,6 +58,9 @@ func _ready():
 				square.color = SQUARE_COLOR_2
 			
 			add_child(square)
+	var enemy_instance = Enemy.new()
+	enemy_instance.connect('pawn_move', self, '_on_pawn_move')
+	connect('decide_move', enemy_instance, '_on_decide_move')
 	if OS.is_debug_build():
 		skip_game()
 	else:
@@ -196,6 +202,9 @@ func _on_move_clicked(move_spot) -> void:
 			move_spot.pawn.posY = move_spot.posY
 			move_spot.pawn.target = Vector2(BOARD_POS_X + move_spot.posX * SQUARE_SIZE, BOARD_POS_Y + move_spot.posY * SQUARE_SIZE)
 			clear_pawn_moves()
+			print("enemyturn")
+			gameState = GameStates.EnemyTurn
+			emit_signal('decide_move')
 		else:
 			if boardState[move_spot.posX][move_spot.posY].type == move_spot.pawn.type:
 				return
@@ -223,12 +232,24 @@ func initiate_fight(attacker, defender):
 		attacker.target = Vector2(BOARD_POS_X + defender.posX * SQUARE_SIZE, BOARD_POS_Y + defender.posY * SQUARE_SIZE)
 		yield(get_tree().create_timer(0.5), "timeout")
 		defender.queue_free()
-		gameState = GameStates.PlayerTurn
+		if attacker.type == Constants.Types.Player:
+			print("enemyturn")
+			gameState = GameStates.EnemyTurn
+			emit_signal('decide_move')
+		else:
+			print("yourturn")
+			gameState = GameStates.PlayerTurn
 	else:
 		boardState[attacker.posX][attacker.posY] = null
 		defender.target = Vector2(BOARD_POS_X + defender.posX * SQUARE_SIZE, BOARD_POS_Y + defender.posY * SQUARE_SIZE)
 		attacker.queue_free()
-		gameState = GameStates.PlayerTurn
+		if attacker.type == Constants.Types.Player:
+			print("enemyturn")
+			gameState = GameStates.EnemyTurn
+			emit_signal('decide_move')
+		else:
+			print("yourturn")
+			gameState = GameStates.PlayerTurn
 
 func attacker_wins(attacker, defender) -> bool:
 	if defender.item == Constants.Items.Flag:
@@ -263,6 +284,10 @@ func attacker_wins(attacker, defender) -> bool:
 
 func draw(attacker, defender):
 	return true
+
+func _on_pawn_move():
+	if gameState == GameStates.EnemyTurn:
+		gameState = GameStates.PlayerTurn
 
 func _on_game_ui_reshuffle_pawns():
 	if gameState == GameStates.ShufflePawns:
